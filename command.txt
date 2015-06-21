@@ -1,0 +1,8 @@
+npm install --save express
+express -e test_server
+mongod --dbpath E:\MongoDB\Data
+npm install --save mongoose 
+npm start
+npm install --save underscore
+node test_.js
+node --harmony generator_test.js

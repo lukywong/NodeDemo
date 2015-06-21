@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>User</h1>
+    <a href="/add">Add</a>
+    <ul>
+      <%users.forEach(function(u){%>
+      <li><%=u.name%></li>
+      <%})%>
+    </ul>
+  </body>
+</html>

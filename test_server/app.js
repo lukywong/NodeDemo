@@ -4,9 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var mongoose = require('mongoose');
+//var routes = require('./routes/index');
+//var users = require('./routes/users');
 
 var app = express();
 
@@ -22,8 +22,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+mongoose.connect('mongodb://localhost/test_server');
+var User = mongoose.model('User', {name: String, des: String});
+
+app.get("/", function(req, res){
+  User.find({}, function(err, users){
+    res.render("user", {users: users, title: "user list"});
+  });
+});
+
+var userCount = 0;
+app.get("/add", function(req, res){
+  userCount++;
+  var user = new User({name: "User" + userCount});
+  user.save();
+  res.redirect("/");
+});
+
+app.get("/headers", function (req, res) {
+  res.set('Content-Type', 'text/plain');
+  var s = '';
+  for (var name in req.headers) {
+    s += name + ': ' + req.headers[name] + '\n';
+  }
+  res.send(s);
+  // body...
+});
+
+//app.use('/', routes);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
